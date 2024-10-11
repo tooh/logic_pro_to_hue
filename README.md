@@ -46,6 +46,7 @@ API_KEY = [API key]
 
 FOCUS_MODE = 'Music Production'
 
+
 4. **Running the Project**
 
 After configuring the config.ini file, run the Python script to listen for incoming MIDI signals and connect to the Hue bridge:
