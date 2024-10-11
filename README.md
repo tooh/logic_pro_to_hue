@@ -33,26 +33,26 @@ Ensure you have the following:
 
 3. **Configuration**
 
-INI File Setup
+   INI File Setup
 
-The script uses a config.ini file for configuration. Create this file in the root directory of your project with the following structure:
+   The script uses a config.ini file for configuration. Create this file in the root directory of your project with the following structure:
 
-```bash
-[Hue]
-BRIDGE_IP = [IP of your Hue bridge]
-LIGHT_ID = 4 [Light ID of the lap you want to switch]
-USERNAME =[API key]      
-API_KEY = [API key]
+   ```bash
+   [Hue]
+   BRIDGE_IP = [IP of your Hue bridge]
+   LIGHT_ID = 4 [Light ID of the lap you want to switch]
+   USERNAME =[API key]      
+   API_KEY = [API key]
 
-FOCUS_MODE = 'Music Production'
+   FOCUS_MODE = 'Music Production'
 
 
 4. **Running the Project**
 
-After configuring the config.ini file, run the Python script to listen for incoming MIDI signals and connect to the Hue bridge:
+   After configuring the config.ini file, run the Python script to listen for incoming MIDI signals and connect to the Hue bridge:
 
-```bash
-python logic_pro_midi_reader.py
+   ```bash
+   python logic_pro_midi_reader.py
 
 
 ##Logic Pro Setup
