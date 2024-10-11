@@ -31,7 +31,7 @@ Ensure you have the following:
    ```bash
    pip install python-rtmidi
 
-3. ** Configuration**
+3. **Configuration**
 
 INI File Setup
 
@@ -46,7 +46,7 @@ API_KEY = [API key]
 
 FOCUS_MODE = 'Music Production'
 
-4 ** Running the Project**
+4 **Running the Project**
 
 After configuring the config.ini file, run the Python script to listen for incoming MIDI signals and connect to the Hue bridge:
 
@@ -54,12 +54,12 @@ After configuring the config.ini file, run the Python script to listen for incom
 python logic_pro_midi_reader.py
 
 
-**Logic Pro Setup**
+##Logic Pro Setup
 
 To enable Logic Pro to send MIDI signals, make sure to:
 
 
 
-**License**
+##License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
