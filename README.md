@@ -57,7 +57,24 @@ Ensure you have the following:
 
 ## Logic Pro Setup
 
-To enable Logic Pro to send MIDI signals, make sure to:
+
+The Recording Light control surface plug-in enables you to control an external light or sign, warning visitors not to enter the recording studio before or during recording. Logic Pro sends a MIDI signal to switch on the external device when a track is record-enabled or when recording starts. Logic Pro sends another MIDI signal to switch off the device when tracks are made record-safe or when recording stops.
+
+Note: This control surface plug-in requires additional hardware that is not included with Logic Pro.
+
+Recording Light needs to be manually added to your setup.
+Set up Recording Light
+
+    Choose Logic Pro > Control Surfaces > Setup.
+
+    Choose Install from the New menu.
+
+    Select Recording Light from the list in the Install window.
+
+    Click the Add button.
+
+    Note: While Recording Light can be added anywhere, it is suggested that you use it in its own control surface group.
+
 
 
 
