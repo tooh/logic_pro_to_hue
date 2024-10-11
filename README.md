@@ -26,10 +26,14 @@ Ensure you have the following:
  
 2. **Install Python Dependencies**
 
-   Install the required Python library rtmidi:
+   Install the required Python libraries
 
    ```bash
-   pip install python-rtmidi
+   pip3 install python-rtmidi
+   pip3 install requests
+   pip3 install configparser
+   pip3 install phue
+
 
 3. **Configuration**
 
