@@ -127,7 +127,7 @@ def switch_on_light_by_id(light_id):
 
     bridge.set_light(light_id, onAIR)
     logging.debug(f'Bridge connect response: {bridge}')
-    print(f"Switched on the light with ID: {light_id}")
+    logging.info(f"Switched on the light with ID: {light_id}")
 
 def switch_off_light_by_id(light_id):
     # Connect to the bridge
@@ -154,7 +154,7 @@ def switch_off_light_by_id(light_id):
     
     bridge.set_light(light_id,offAIR)
     logging.debug(f'Bridge connect response: {bridge}')
-    print(f"Switched off the light with ID: {light_id}")    
+    logging.info (f"Switched off the light with ID: {light_id}")    
     return
 
 # Function to check if macOS Focus Mode is set to "Music Production"
@@ -221,16 +221,6 @@ def main():
                     color = {"on": True, "bri": 255, "xy": [0.214, 0.709]}  # Blue (Recording stopped)
                     logging.info('Recording stopped. Setting light to blue.')
                     switch_off_light_by_id(LIGHT_ID)
-
-
-                
-
-                # Send the request to set the light state
-                #url = f'http://{LIGHT_IP}/api/{USERNAME}/lights/{LIGHT_ID}/state'
-                #response = requests.put(url, json=color)
-
-                # Log the response
-                #logging.debug(f'Light control response: {response.json()}')
 
             time.sleep(0.01)  # Prevent CPU overload
     except KeyboardInterrupt:
