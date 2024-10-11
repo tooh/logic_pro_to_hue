@@ -55,12 +55,12 @@ Ensure you have the following:
    python logic_pro_midi_reader.py
 
 
-##Logic Pro Setup
+## Logic Pro Setup
 
 To enable Logic Pro to send MIDI signals, make sure to:
 
 
 
-##License
+## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
