@@ -137,6 +137,7 @@ def switch_off_light_by_id(light_id):
         return
     
     default = bridge.get_light(light_id) # Default state
+    logging.debug(f'Default state: {default}')
 
     # Switch off the light
 #    offAIR = {
@@ -230,6 +231,7 @@ def main():
         midiin.close_port()
         del midiin
         print("MIDI input port closed. Goodbye!")
+        logging.shutdown()
 
 if __name__ == "__main__":
     main()
