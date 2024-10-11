@@ -12,7 +12,7 @@ In this case a Hue lamp.
 Ensure you have the following:
 - macOS with Logic Pro installed.
 - Python 3.x installed on your machine.
-- MIDI output in Logic Pro is configured (Preferences > MIDI > Inputs/Outputs).
+- MIDI output in Logic Pro is configured (Logic Pro > Control Surfaces > Setup).
 - A network setup that allows connection to the specified remote `LIGHT_IP`.
 - API key on the Hue bridge
 
