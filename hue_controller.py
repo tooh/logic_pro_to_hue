@@ -46,7 +46,7 @@ def turn_on_off_lights(state):
 
     print(f"Select {'off' if state == 'on' else 'on'} lights to turn {'on' if state == 'on' else 'off'}:")
     for idx, (light_id, light_name) in enumerate(lights, 1):
-        print(f"{idx}. {light_name}")
+        print(f"{idx}. {light_name} (Light ID {light_id})")
 
     selection = input("Enter the number(s) of the light(s) to control (separated by comma), or 'q' to quit: ")
     if selection.lower() == 'q':
@@ -58,6 +58,7 @@ def turn_on_off_lights(state):
         if 0 < selected_number <= len(lights):
             selected_light_id, _ = lights[selected_number - 1]
             light_url = f"{BASE_URL}/lights/{selected_light_id}/state"
+            print(light_url)
             requests.put(light_url, json={"on": state == 'on'})
             print(f"Light '{lights[selected_number - 1][1]}' turned {'on' if state == 'on' else 'off'}")
         else:

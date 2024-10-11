@@ -7,8 +7,8 @@ Control Philips Hue lights based on MIDI input from Logic Pro's Recording Light 
 The script only listens for MIDI messages when macOS Focus Mode is set to 'Music Production'.
 
 Author: Peter Florijn
-Date: December 1, 2023
-Version: 1.7
+Date: October 10, 2024
+Version: 0.9
 """
 
 from __future__ import print_function
@@ -139,13 +139,19 @@ def switch_off_light_by_id(light_id):
     default = bridge.get_light(light_id) # Default state
 
     # Switch off the light
+#    offAIR = {
+#        'on': default['state']['false'],
+#        'sat': default['state']['sat'],
+#        'hue': default['state']['hue'],
+#        'bri': default['state']['bri'],
+#    }
     offAIR = {
-        'on': default['state']['on'],
-        'sat': default['state']['sat'],
-        'hue': default['state']['hue'],
-        'bri': default['state']['bri'],
-    }
-      
+        'on': False,
+        'bri':254, # Full luminosity
+        'sat': 254, # Full saturation
+        'hue': 65535 # Red
+    }  
+    
     bridge.set_light(light_id,offAIR)
     logging.debug(f'Bridge connect response: {bridge}')
     print(f"Switched off the light with ID: {light_id}")    
