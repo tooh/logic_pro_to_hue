@@ -18,7 +18,6 @@ import sys
 import time
 from rtmidi.midiutil import open_midiinput
 import requests
-import rtmidi
 import subprocess
 import configparser
 from phue import Bridge
@@ -39,6 +38,7 @@ port_name = "Logic Pro Virtual Out"
 
 # Set up logging
 logging.basicConfig(filename='logic_pro_to_hue.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 def connect_to_hue_bridge():
     # Connect to the Hue Bridge
