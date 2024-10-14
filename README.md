@@ -22,7 +22,7 @@ Ensure you have the following:
 
    ```bash
    git clone https://github.com/tooh/logic_pro_to_hue.git
-   cd logic_pro_to_hie
+   cd logic_pro_to_hue
  
 2. **Install Python Dependencies**
 
@@ -39,7 +39,8 @@ Ensure you have the following:
 
    INI File Setup
 
-   The script uses a config.ini file for configuration. Create this file in the root directory of your project with the following structure:
+   The script uses a config.ini file for configuration. A template for this file is available in the templates folder. 
+   Create this file in the root directory of this project with the following structure:
 
    ```bash
    [Hue]
@@ -84,4 +85,4 @@ Set up Recording Light
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the GNU GENERAL PUBLIC LICENSE. See the LICENSE file for details.
