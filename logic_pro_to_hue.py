@@ -13,6 +13,9 @@ Version: 0.9
 
 from __future__ import print_function
 
+import json
+import os
+import datetime
 import logging
 import sys
 import time
@@ -32,6 +35,8 @@ LIGHT_ID = config.getint('Hue', 'LIGHT_ID')
 USERNAME = config.get('Hue', 'USERNAME')
 FOCUS_MODE = config.get('Hue','FOCUS_MODE')
 
+ASSERT_PATH = os.path.expanduser("~/Library/DoNotDisturb/DB/Assertions.json")
+MODECONFIG_PATH = os.path.expanduser("~/Library/DoNotDisturb/DB/ModeConfigurations.json")
 
 # Specify the MIDI input port name
 port_name = "Logic Pro Virtual Out"
@@ -80,35 +85,31 @@ def format_timestamp(timer):
     return time.strftime("%H:%M:%S", time.localtime(timer)) + f".{int((timer % 1) * 1000):03d}"
 
 
+#Function to check if macOS Focus Mode is set to "Music Production"
+def get_focus():
+    focus = "No focus" #default
+    assertJ = json.load(open(ASSERT_PATH))['data'][0]['storeAssertionRecords']
+    configJ = json.load(open(MODECONFIG_PATH))['data'][0]['modeConfigurations']
+    if assertJ:
+        modeid = assertJ[0]['assertionDetails']['assertionDetailsModeIdentifier']
+        focus = configJ[modeid]['mode']['name']
+    else:
+        date = datetime.datetime.today()
+        now = date.hour * 60 + date.minute
 
-# Function to check if macOS Focus Mode is set to "Music Production"
-def check_focus_mode(focus_mode_name):
-    # AppleScript to check for the active Focus mode
-    script = f'''
-    tell application "System Events"
-        tell current location of network preferences
-            set focusList to {"{focus_mode_name}"}
-            if focusList contains "{focus_mode_name}" then
-                return "{focus_mode_name} is active"
-            else
-                return "{focus_mode_name} is not active"
-            end if
-        end tell
-    end tell
-    '''
-    
-    # Run the AppleScript via osascript
-    result = subprocess.run(
-        ['osascript', '-e', script],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True
-    )
-    
-    if result.returncode != 0:
-        return f"Error: {result.stderr.strip()}"
-    
-    return result.stdout.strip()
+        for modeid in configJ:
+            triggers = configJ[modeid]['triggers']['triggers'][0]
+            if triggers and triggers['enabledSetting'] == 2:
+                start = triggers['timePeriodStartTimeHour'] * 60 + triggers['timePeriodStartTimeMinute']
+                end = triggers['timePeriodEndTimeHour'] * 60 + triggers['timePeriodEndTimeMinute']
+                if start < end:
+                    if now >= start and now < end:
+                        focus = configJ[modeid]['mode']['name']
+                elif start > end: # includes midnight
+                    if now >= start or now < end:
+                        focus = configJ[modeid]['mode']['name']
+    return focus
+
 
 def switch_on_light_by_id(light_id):
     # Connect to the bridge
@@ -158,30 +159,11 @@ def switch_off_light_by_id(light_id):
     logging.info (f"Switched off the light with ID: {light_id}")    
     return
 
-# Function to check if macOS Focus Mode is set to "Music Production"
-def is_focus_mode_music_production():
-    try:
-        # Run an AppleScript command to get the current Focus Mode
-        result = subprocess.run(
-            ['osascript', '-e', 'tell application "System Events" to get name of every focus of every focus mode'],
-            capture_output=True, text=True
-        )
-        
-        # The result will contain all focus modes
-        active_modes = result.stdout.strip().split(", ")
-        logging.debug(f'Active macOS Focus Modes: {active_modes}')
-        
-        # Check if "Music Production" is one of the active modes
-        return "Music Production" in active_modes
-    
-    except Exception as e:
-        logging.error(f'Error checking macOS Focus Mode: {str(e)}')
-        return False
-
-
 def main():
 
     connect_to_hue_bridge()
+    #print(check_focus_mode(FOCUS_MODE))
+    print(get_focus())
 
 # Main function to receive MIDI input.#
 
@@ -199,6 +181,7 @@ def main():
     print("Entering main loop. Press Control-C to exit.")
     try:
         timer = time.time()
+        #focus = get_focus()
         while True:
             msg = midiin.get_message()
 
