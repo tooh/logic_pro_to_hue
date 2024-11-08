@@ -1,0 +1,42 @@
+# .github/workflows/stale.yml
+
+name: "Mark stale issues and pull requests"
+on:
+  schedule:
+    - cron: "0 0 * * *"  # Runs daily at midnight (UTC)
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@latest
+        with:
+          # Time in days until an issue or pull request is considered stale
+          days-before-stale: 30
+          
+          # Time in days until a stale issue or pull request is closed
+          days-before-close: 7
+
+          # Comment to post on a stale issue or pull request
+          stale-issue-message: "This issue has been automatically marked as stale due to inactivity. If it remains inactive, it will be closed in 7 days. Please comment or reopen if you want to keep it open."
+          stale-pr-message: "This pull request has been automatically marked as stale due to inactivity. If it remains inactive, it will be closed in 7 days. Please comment or reopen if you want to keep it open."
+
+          # Comment to post on an issue or pull request when it is closed
+          close-issue-message: "Closing this issue due to inactivity."
+          close-pr-message: "Closing this pull request due to inactivity."
+
+          # Only issues or pull requests with this label will be marked stale
+          stale-label: "stale"
+
+          # Automatically remove the stale label when there is new activity
+          remove-stale-when-updated: true
+
+          # Skip issues or pull requests with these labels from being marked stale
+          exempt-issue-labels: "bug,help wanted"
+          exempt-pr-labels: "work in progress,do not merge"
+
+          # Skip issues or pull requests created by specified users
+          exempt-assignees: "github-bot"
+
+          # Limit the number of actions processed per run to avoid reaching API limits
+          operations-per-run: 30
