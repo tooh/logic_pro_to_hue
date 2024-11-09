@@ -9,7 +9,7 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@latest
+      - uses: actions/stale@v8
         with:
           # Time in days until an issue or pull request is considered stale
           days-before-stale: 30
