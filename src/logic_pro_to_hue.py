@@ -6,6 +6,8 @@ logic_pro_to_hue.py
 Control Philips Hue lights based on MIDI input from Logic Pro's Recording Light Control Surface using Note On messages.
 The script only listens for MIDI messages when macOS Focus Mode is set to 'Music Production'.
 
+Option to create a custom "Recording" app on a Ulanzi LED Clock.
+
 Author: Peter Florijn
 Date: October 10, 2024
 Version: 0.9
@@ -34,6 +36,7 @@ BRIDGE_IP = config.get('Hue', 'BRIDGE_IP')
 LIGHT_ID = config.getint('Hue', 'LIGHT_ID')
 USERNAME = config.get('Hue', 'USERNAME')
 FOCUS_MODE = config.get('Hue','FOCUS_MODE')
+AWTRIX_HOST = config.get('Awtrix', 'AWTRIX_HOST')
 
 ASSERT_PATH = os.path.expanduser("~/Library/DoNotDisturb/DB/Assertions.json")
 MODECONFIG_PATH = os.path.expanduser("~/Library/DoNotDisturb/DB/ModeConfigurations.json")
@@ -42,7 +45,7 @@ MODECONFIG_PATH = os.path.expanduser("~/Library/DoNotDisturb/DB/ModeConfiguratio
 port_name = "Logic Pro Virtual Out"
 
 # Set up logging
-logging.basicConfig(filename='logic_pro_to_hue.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='logic_pro_to_hue.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 def connect_to_hue_bridge():
@@ -111,53 +114,34 @@ def get_focus():
     return focus
 
 
-def switch_on_light_by_id(light_id):
+def set_light_state(light_id, state):
     # Connect to the bridge
     bridge = connect_to_hue_bridge()
     if bridge is None:
         logging.debug(f'Bridge connect response: {bridge}')
         return
     
-    # Switch on the light
+    bridge.set_light(light_id, state)
+    logging.debug(f'Bridge connect response: {bridge}')
+    logging.info(f"Set light with ID: {light_id} to state: {state}")
+
+def switch_on_light_by_id(light_id):
     onAIR = {
         'on': True,
-        'bri':254, # Full luminosity
+        'bri': 254, # Full luminosity
         'sat': 254, # Full saturation
         'hue': 65535 # Red
     }
-
-    bridge.set_light(light_id, onAIR)
-    logging.debug(f'Bridge connect response: {bridge}')
-    logging.info(f"Switched on the light with ID: {light_id}")
+    set_light_state(light_id, onAIR)
 
 def switch_off_light_by_id(light_id):
-    # Connect to the bridge
-    bridge = connect_to_hue_bridge()
-    if bridge is None:
-        logging.debug(f'Bridge connect response: {bridge}')
-        return
-    
-    default = bridge.get_light(light_id) # Default state
-    logging.debug(f'Default state: {default}')
-
-    # Switch off the light
-#    offAIR = {
-#        'on': default['state']['false'],
-#        'sat': default['state']['sat'],
-#        'hue': default['state']['hue'],
-#        'bri': default['state']['bri'],
-#    }
     offAIR = {
         'on': False,
-        'bri':254, # Full luminosity
+        'bri': 254, # Full luminosity
         'sat': 254, # Full saturation
         'hue': 65535 # Red
-    }  
-    
-    bridge.set_light(light_id,offAIR)
-    logging.debug(f'Bridge connect response: {bridge}')
-    logging.info (f"Switched off the light with ID: {light_id}")    
-    return
+    }
+    set_light_state(light_id, offAIR)
 
 def main():
 
@@ -199,10 +183,16 @@ def main():
                 # Set light color based on velocity (127 = started, 0 = stopped)
                 if velocity == 127 and note == 24:
                     color = {"on": True, "bri": 255, "xy": [1, 0]}  # Red (Recording started)
+                    if AWTRIX_HOST:
+                        result = subprocess.run(["python", "rest_pub_recording.py"], capture_output=True, text=True)
+                        logging.info(f"Awtrix recording app started: {result}")    
                     logging.info('Recording started. Setting light to red.')
                     switch_on_light_by_id(LIGHT_ID)
                 elif velocity == 0 and note == 24:
                     color = {"on": True, "bri": 255, "xy": [0.214, 0.709]}  # Blue (Recording stopped)
+                    if AWTRIX_HOST:
+                        result = subprocess.run(["python", "rest_del_recording.py"], capture_output=True, text=True)
+                        logging.info (f"Awtrix recording app  stopped: {result}")   
                     logging.info('Recording stopped. Setting light to blue.')
                     switch_off_light_by_id(LIGHT_ID)
 
@@ -218,3 +208,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
