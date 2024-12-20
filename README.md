@@ -16,6 +16,9 @@ Ensure you have the following:
 - A network setup that allows connection to the specified remote `LIGHT_IP`.
 - API key on the Hue bridge
 
+Optional
+-  an Ulanzi Led Clock flashed with Awtrix firmware
+
 ## Installation
 
 1. **Clone the repository:**
@@ -33,6 +36,9 @@ Ensure you have the following:
    pip3 install requests
    pip3 install configparser
    pip3 install phue
+   pip3 install configparser
+   pip3 install json
+
 
 
 3. **Configuration**

@@ -9,9 +9,8 @@ The script only listens for MIDI messages when macOS Focus Mode is set to 'Music
 Option to create a custom "Recording" app on a Ulanzi LED Clock.
 
 Author: Peter Florijn
-Date: October 10, 2024
-Version: 0.9
-"""
+Version: 1.0.0 
+""
 
 from __future__ import print_function
 
